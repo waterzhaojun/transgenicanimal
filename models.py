@@ -14,7 +14,7 @@ import django.urls as urls
 
 # import sys
 # sys.path.append('..\\astrotate')
-from astrotate.transgenic import transgenic_offspring_name_style as name_style
+# from astrotate.transgenic import transgenic_offspring_name_style as name_style
 
 class TransgenicAnimalLog(models.Model):
     animalid = models.CharField(primary_key=True, max_length=50)
@@ -34,7 +34,7 @@ class TransgenicAnimalLog(models.Model):
 
     @property
     def strain(self):
-        return(name_style.name_title(self.animalid))
+        return(utils.name_title(self.animalid))
 
     @property
     def age(self):
