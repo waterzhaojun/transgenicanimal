@@ -8,17 +8,4 @@ weaning date: {{ object.weaning_date }}<br>
 Is it still together: {{ object.inprocess }}<br>
 note: {{ object.note }}<br><br>
 
-<form action='.' method='POST'>
-    {% csrf_token %}
-    <label>Weaning this cage: </label><br>
-    <label>male number: </label><input type='number' /><br>
-    <label>female number: </label><input type='number' /><br>
-    <label>keep mating: </label>
-    <select>
-        <option value='y'>yes</option>
-        <option value='n'>no</option>
-    </select><br>
-    <input type='submit' value='Weaning' name='weaning'/><br><br>
-    <input type='submit' value='Birth' name='birth'/><br><br>
-
-</form>
+<a href="../">return</a>

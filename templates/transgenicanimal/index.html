@@ -1,6 +1,6 @@
 
 <h3>The mating pairs</h3><br>
-<a href = "createmate">Create a new mate</a>
+Create a new mate
 <ul>
     {% for obj in mates %}
         <li><a href = "{% url 'mateinfo' obj.mateid %}">{{ obj.mateid }}</a>
