@@ -1,0 +1,18 @@
+id: {{ animal.animalid }}<br>
+age: {{ animal.age }}<br>
+cage: {{ animal.cageid }}<br>
+mate id: {{ animal.birth_mate_id }}<br>
+animal gene info: 
+{{ animal.genotype }}<br>
+father id: <a href = "{% url 'animalinfo' fatherid %}">{{ fatherid }}</a><br>
+mother id: <a href = "{% url 'animalinfo' fatherid %}">{{ motherid }}</a><br>
+<br>
+<form action='.' method='POST'>
+    {% csrf_token %}
+    <label>sac this animal: </label>
+    <input type='submit' value='SAC' /><br>
+    <label>Update cage: </label><input type='text'><input type='submit' value='UPDATE'><br>
+
+</form>
+
+<a href="../">return</a>

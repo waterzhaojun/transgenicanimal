@@ -1,0 +1,27 @@
+
+<h3>The mating pairs</h3><br>
+<a href = "createmate">Create a new mate</a>
+<ul>
+    {% for obj in mates %}
+        <li><a href = "{% url 'mateinfo' obj.mateid %}">{{ obj.mateid }}</a>
+             ----- {{ obj.cageid }} -----{{ obj.father_id }} -----{{ obj.mother_id }} ------pair date: {{ obj.pair_date }} -----birthday: {{ obj.birthday }} </li>
+    {% endfor %}
+</ul>
+
+<h3>Animal list</h3>
+{% regroup animals by strain as strain_list %}
+<ul>
+    {% for thestrain in strain_list %}
+        <li>{{ thestrain.grouper }}</li>
+        <ul>
+            {% for animal in thestrain.list %}
+                <li><a href = "{% url 'animalinfo' animal.animalid %}">{{ animal.animalid }}</a>
+                    --- {{ animal.cageid }} --- {{ animal.gender }} ---{{ animal.ear_punch }}---{{ animal.age }} ---{{ animal.genotype }} ---{{ animal.plate_num }}</li>
+            {% endfor %}
+
+
+        </ul>
+        
+    {% endfor %}
+    <br><br>
+</ul>

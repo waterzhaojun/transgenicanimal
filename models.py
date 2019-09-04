@@ -12,9 +12,6 @@ from datetime import datetime
 import math
 import django.urls as urls
 
-# import sys
-# sys.path.append('..\\astrotate')
-# from astrotate.transgenic import transgenic_offspring_name_style as name_style
 
 class TransgenicAnimalLog(models.Model):
     animalid = models.CharField(primary_key=True, max_length=50)

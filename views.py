@@ -51,17 +51,6 @@ class AnimalInfo(View):
         return render(request, self.template_name, context)
     # def get_context_data(self, **k)
 
-# class AnimalInfo(generic.UpdateView):
-#     model = TransgenicAnimalLog
-#     template_name = 'transgenicanimal/info.html'
-#     form_class = AnimalInfoForm
-    # queryset = TransgenicAnimalLog.objects.all() #filter(~Q(cageid = 'terminated'))
-
-    # def get_object(self):
-    #     id_ = self.kwargs.get('')
-    # def form_valid(self, form):
-    #     print(form.cleaned_data)
-    #     return(super().form_valid(form))
 
 class AnimalCreate(generic.CreateView):
     form_class = AnimalInfoForm
@@ -80,7 +69,7 @@ class MateCreate(generic.CreateView):
 class MateInfo(generic.DetailView): # have to use updateview instead of detailview as detailview doesn't output a form
     model = TransgenicMouseBreeding
     template_name = 'transgenicanimal/mateinfo.html'
-    
+   
 
 
 
