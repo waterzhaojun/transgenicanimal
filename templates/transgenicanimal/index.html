@@ -1,27 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <link rel="stylesheet" type="text/css" href="admin/css/transgenicanimal.css">
+    <style>
+        td {
+            padding: 2px 15px;
+        }
+    </style>
+    </head>
 
-<h3>The mating pairs</h3><br>
-Create a new mate
-<ul>
-    {% for obj in mates %}
-        <li><a href = "{% url 'mateinfo' obj.mateid %}">{{ obj.mateid }}</a>
-             ----- {{ obj.cageid }} -----{{ obj.father_id }} -----{{ obj.mother_id }} ------pair date: {{ obj.pair_date }} -----birthday: {{ obj.birthday }} </li>
-    {% endfor %}
-</ul>
-
-<h3>Animal list</h3>
-{% regroup animals by strain as strain_list %}
-<ul>
-    {% for thestrain in strain_list %}
-        <li>{{ thestrain.grouper }}</li>
-        <ul>
-            {% for animal in thestrain.list %}
-                <li><a href = "{% url 'animalinfo' animal.animalid %}">{{ animal.animalid }}</a>
-                    --- {{ animal.cageid }} --- {{ animal.gender }} ---{{ animal.ear_punch }}---{{ animal.age }} ---{{ animal.genotype }} ---{{ animal.plate_num }}</li>
+    <body>
+        <h3>The mating pairs</h3><br>
+        Create a new mate
+        <table>
+            <tr>
+                <th>mate id</th>
+                <th>cage id</th>
+                <th>father</th>
+                <th>mother</th>
+                <th>pair date</th>
+                <th>birthday</th>
+            </tr>
+            {% for obj in mates %}
+            <tr>
+                <td><a href = "{% url 'mateinfo' obj.mateid %}">{{ obj.mateid }}</a></td>
+                <td>{{ obj.cageid }}</td>
+                <td>{{ obj.father_id }}</td>
+                <td>{{ obj.mother_id }}</td>
+                <td>{{ obj.pair_date }}</td>
+                <td>{{ obj.birthday }}</td>
+            </tr>
             {% endfor %}
+        </table>
 
-
-        </ul>
-        
-    {% endfor %}
-    <br><br>
-</ul>
+        <h3>Animal list</h3>
+        {% regroup animals by strain as strain_list %}
+        {% for thestrain in strain_list %}
+        <table>
+            <tr>
+                <td>
+                    <li>{{ thestrain.grouper }}</li>
+                </td>
+            </tr>
+            <tr>
+                <th>animal id</th>
+                <th>cage id</th>
+                <th>gender</th>
+                <th>ear punch</th>
+                <th>age</th>
+                <th>genotype</th>
+                <th>plate num</th>
+            </tr>
+            {% for animal in thestrain.list %}
+            <tr>
+                <td><a href = "{% url 'animalinfo' animal.animalid %}">{{ animal.animalid }}</a></td>
+                <td>{{ animal.cageid }}</td>
+                <td>{{ animal.gender }}</td>
+                <td>{{ animal.ear_punch }}</td>
+                <td>{{ animal.age }}</td>
+                <td>{{ animal.genotype }}</td>
+                <td>{{ animal.plate_num }}</td>
+            </tr>
+            {% endfor %} 
+        </table>
+        <br>
+        {% endfor %}
+    </body>
+</html>
