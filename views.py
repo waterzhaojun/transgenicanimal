@@ -1,13 +1,14 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse, HttpResponseRedirect
 
 from django.views import generic, View
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.db.models import Q
 
 from .models import TransgenicAnimalLog, TransgenicMouseBreeding
 from .forms import AnimalMateForm, AnimalInfoForm
+from datetime import datetime, timedelta
 
 # Create your views here.
 
@@ -87,5 +88,12 @@ def breeding(request):
     return render(request, 'tr')
 """ 
 
-def haha():
-    print('just a test')
+def terminate(request, animalid):
+    TransgenicAnimalLog.objects.filter(animalid = animalid).update(cageid='terminated')
+    return HttpResponseRedirect(reverse('transgenicanimal')) # reverse by this url name.
+        
+def givebirth(request, mateid):
+    day = datetime.today() - timedelta(days=int(request.POST.get('days')))
+    TransgenicMouseBreeding.objects.filter(mateid = mateid).update(birthday=day)
+    return HttpResponseRedirect(reverse('transgenicanimal'))
+    
