@@ -7,9 +7,10 @@ from . import views
 urlpatterns = [
 
     path('', views.index.as_view(), name='index'),
-    path('animalinfo/', views.index.as_view()),
+    #path('animalinfo/', views.index.as_view()),
     path('index', views.index.as_view(), name='transgenicanimal'),
-    path('animalinfo/<str:pk>', views.AnimalInfo.as_view(), name='animalinfo'),
+    path('animalinfo/<str:animalid>', views.AnimalInfo.as_view(), name='animalinfo'),
+    path('animalinfo/', views.AnimalInfo.as_view()), # This is another way to search that id is in request
     path('animalinfo/terminate/<str:animalid>', views.terminate, name='terminate'),
     path('animalinfo_create/', views.AnimalCreate.as_view(), name='animal_create'),
     path('createmate/', views.MateCreate.as_view(), name='mate_create'),

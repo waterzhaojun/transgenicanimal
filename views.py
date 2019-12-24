@@ -38,7 +38,14 @@ class AnimalInfo(View):
     #     id_ = self.kwargs.get('id')
     #     return get_object_or_404(TransgenicAnimalLog, id=id_)
     def get(self, request, **kwargs):
-        animal = TransgenicAnimalLog.objects.filter(animalid = kwargs['pk'])[0]
+        if 'animalid' in kwargs.keys():
+            animalid = kwargs['animalid']
+        else:
+            animalid = dict(request.GET.lists())['animalid'][0]
+            print(request.GET.lists())
+            print(animalid)
+
+        animal = TransgenicAnimalLog.objects.filter(animalid = animalid)[0]
         mate = animal.birth_mate
         context = {'animal': animal}
         # print(getattr(mate.father, 'animalid'))
