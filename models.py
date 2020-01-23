@@ -23,6 +23,7 @@ class TransgenicAnimalLog(models.Model):
     genotype = models.TextField(blank=True, null=True)
     test_company = models.CharField(max_length=20, blank=True, null=True)
     plate_num = models.CharField(max_length=20, blank=True, null=True)
+    generation = models.IntegerField(max_length=2, blank=True, null=True)
     #full_name = models.CharField(max_length=100)
 
     class Meta:
