@@ -1,18 +1,24 @@
-mate id: {{ object.mateid }}<br>
-cage id: {{ object.cageid }}<br>
-father: {{ object.father.animalid }}&nbsp&nbsp&nbsp&nbsp(genotype: {{ object.father.genotype }})<br>
-mother: {{ object.mother.animalid }}&nbsp&nbsp&nbsp&nbsp(genotype: {{ object.father.genotype }})<br>
-pair date: {{ object.pair_date }}<br>
-deliever date: {{ object.dirthday }}<br>
-weaning date: {{ object.weaning_date }}<br>
-Is it still together: {{ object.inprocess }}<br>
-note: {{ object.note }}<br><br>
+{% extends 'base.html' %}
 
-<form action="{% url 'givebirth' object.mateid %}" method='POST'>
-{% csrf_token %}
+{% block content %}
 
-Delievered <input type='number' value=0 name='days'></input> days ago
-<input type='submit' value='Confirm give birth'></input>
-</form>
+    mate id: {{ object.mateid }}<br>
+    cage id: {{ object.cageid }}<br>
+    father: {{ object.father.animalid }}&nbsp&nbsp&nbsp&nbsp(genotype: {{ object.father.genotype }})<br>
+    mother: {{ object.mother.animalid }}&nbsp&nbsp&nbsp&nbsp(genotype: {{ object.father.genotype }})<br>
+    pair date: {{ object.pair_date }}<br>
+    deliever date: {{ object.dirthday }}<br>
+    weaning date: {{ object.weaning_date }}<br>
+    Is it still together: {{ object.inprocess }}<br>
+    note: {{ object.note }}<br><br>
 
-<a href="../">return</a>
+    <form action="{% url 'givebirth' object.mateid %}" method='POST'>
+    {% csrf_token %}
+
+    Delievered <input type='number' value=0 name='days'></input> days ago
+    <input type='submit' value='Confirm give birth'></input>
+    </form>
+
+    <a href="../">return</a>
+
+{% endblock %}

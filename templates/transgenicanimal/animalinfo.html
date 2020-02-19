@@ -1,15 +1,21 @@
-id: {{ animal.animalid }}<br>
-birthday: {{ animal.dob }}<br>
-cage: {{ animal.cageid }}<br>
-mate id: {{ animal.birth_mate_id }}<br>
-animal gene info: 
-{{ animal.genotype }}<br>
-father id: <a href = "{% url 'animalinfo' fatherid %}">{{ fatherid }}</a><br>
-mother id: <a href = "{% url 'animalinfo' motherid %}">{{ motherid }}</a><br>
-<br>
-<form action= "{% url 'terminate' animal.animalid %}" method='POST'>
-{% csrf_token %}
+{% extends 'base.html' %}
 
-<input type='submit' value='Move it out of calony'>
-</form>
-<a href="../">return</a>
+{% block content %}
+
+    id: {{ animal.animalid }}<br>
+    birthday: {{ animal.dob }}<br>
+    cage: {{ animal.cageid }}<br>
+    mate id: {{ animal.birth_mate_id }}<br>
+    animal gene info: 
+    {{ animal.genotype }}<br>
+    father id: <a href = "{% url 'animalinfo' fatherid %}">{{ fatherid }}</a><br>
+    mother id: <a href = "{% url 'animalinfo' motherid %}">{{ motherid }}</a><br>
+    <br>
+    <form action= "{% url 'terminate' animal.animalid %}" method='POST'>
+    {% csrf_token %}
+
+    <input type='submit' value='Move it out of calony'>
+    </form>
+    <a href="../">return</a>
+
+{% endblock %}

@@ -1,77 +1,73 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block customecss %}
 {% load static %}
-<html>
-    <head>
-    <link rel="stylesheet" type="text/css" href="{% static "transgenicanimal/style.css" %}">
-    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" 
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" 
-    crossorigin="anonymous">-->
-    </head>
+<link rel="stylesheet" type="text/css" href="{% static "transgenicanimal/style.css" %}">
+{% endblock %}
 
-    <body>
+{% block content %}
         
-        
-        <h3>Check your animal</h3><br>
-        <form action="animalinfo/" method="get">
-            Animal id: <input type="text" name="animalid">
-            <input type="submit" value="Search">
-        </form>
-        <h3>The mating pairs</h3><br>
-        Create a new mate
-        <table>
-            <tr>
-                <th>mate id</th>
-                <th>cage id</th>
-                <th>father</th>
-                <th>mother</th>
-                <th>pair date</th>
-                <th>birthday</th>
-            </tr>
-            {% for obj in mates %}
-            <tr>
-                <td><a href = "{% url 'mateinfo' obj.mateid %}">{{ obj.mateid }}</a></td>
-                <td>{{ obj.cageid }}</td>
-                <td>{{ obj.father_id }}</td>
-                <td>{{ obj.mother_id }}</td>
-                <td>{{ obj.pair_date }}</td>
-                <td>{{ obj.birthday }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-
-        <h3>Animal list</h3>
-        {% regroup animals by strain as strain_list %}
-        {% for thestrain in strain_list %}
-        <table>
-            <tr>
-                <td>
-                    <li>{{ thestrain.grouper }}</li>
-                </td>
-            </tr>
-            <tr>
-                <th>animal id</th>
-                <th>cage id</th>
-                <th>gender</th>
-                <th>ear punch</th>
-                <th>age</th>
-                <th>generation</th>
-                <th>genotype</th>
-                <th>plate num</th>
-            </tr>
-            {% for animal in thestrain.list %}
-            <tr>
-                <td><a href = "{% url 'animalinfo' animal.animalid %}">{{ animal.animalid }}</a></td>
-                <td>{{ animal.cageid }}</td>
-                <td>{{ animal.gender }}</td>
-                <td>{{ animal.ear_punch }}</td>
-                <td>{{ animal.age }} ({{ animal.dob}})</td>
-                <td>{{ animal.generation }}</td>
-                <td>{{ animal.genotype }}</td>
-                <td>{{ animal.plate_num }}</td>
-            </tr>
-            {% endfor %} 
-        </table>
-        <br>
+    <h3>Check your animal</h3><br>
+    <form action="animalinfo/" method="get">
+        Animal id: <input type="text" name="animalid">
+        <input type="submit" value="Search">
+    </form>
+    <h3>The mating pairs</h3><br>
+    Create a new mate
+    <table>
+        <tr>
+            <th>mate id</th>
+            <th>cage id</th>
+            <th>father</th>
+            <th>mother</th>
+            <th>pair date</th>
+            <th>birthday</th>
+        </tr>
+        {% for obj in mates %}
+        <tr>
+            <td><a href = "{% url 'mateinfo' obj.mateid %}">{{ obj.mateid }}</a></td>
+            <td>{{ obj.cageid }}</td>
+            <td>{{ obj.father_id }}</td>
+            <td>{{ obj.mother_id }}</td>
+            <td>{{ obj.pair_date }}</td>
+            <td>{{ obj.birthday }}</td>
+        </tr>
         {% endfor %}
-    </body>
-</html>
+    </table>
+
+    <h3>Animal list</h3>
+    {% regroup animals by strain as strain_list %}
+    {% for thestrain in strain_list %}
+    <table>
+        <tr>
+            <td>
+                <li>{{ thestrain.grouper }}</li>
+            </td>
+        </tr>
+        <tr>
+            <th>animal id</th>
+            <th>cage id</th>
+            <th>gender</th>
+            <th>ear punch</th>
+            <th>age</th>
+            <th>generation</th>
+            <th>genotype</th>
+            <th>plate num</th>
+        </tr>
+        {% for animal in thestrain.list %}
+        <tr>
+            <td><a href = "{% url 'animalinfo' animal.animalid %}">{{ animal.animalid }}</a></td>
+            <td>{{ animal.cageid }}</td>
+            <td>{{ animal.gender }}</td>
+            <td>{{ animal.ear_punch }}</td>
+            <td>{{ animal.age }} ({{ animal.dob}})</td>
+            <td>{{ animal.generation }}</td>
+            <td>{{ animal.genotype }}</td>
+            <td>{{ animal.plate_num }}</td>
+        </tr>
+        {% endfor %} 
+    </table>
+    <br>
+    {% endfor %}
+
+{% endblock %}
