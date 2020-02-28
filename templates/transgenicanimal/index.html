@@ -13,8 +13,8 @@
         <input type="submit" value="Search">
     </form>
     <h3>The mating pairs</h3><br>
-    Create a new mate
-    <table>
+    
+    <table class="content">
         <tr>
             <th>mate id</th>
             <th>cage id</th>
@@ -38,7 +38,7 @@
     <h3>Animal list</h3>
     {% regroup animals by strain as strain_list %}
     {% for thestrain in strain_list %}
-    <table>
+    <table class="content">
         <tr>
             <td>
                 <li>{{ thestrain.grouper }}</li>
