@@ -14,11 +14,33 @@
 
     <form action="{% url 'givebirth' object.mateid %}" method='POST'>
     {% csrf_token %}
-
     Delievered <input type='number' value=0 name='days'></input> days ago
     <input type='submit' value='Confirm give birth'></input>
     </form>
 
+    <hr>
+    <form action="{% url 'wean' object.mateid %}" method='POST'>
+    {% csrf_token %}
+    <p>male num: <input type='number' value=0 name='malenum'></input>
+    male cage: <input name='malecage'></input>
+    <p>female num: <input type='number' value=0 name='femalenum'></input>
+    female cage: <input name='femalecage'></input>
+    <p>Keep mating:</p>
+    <input type="radio" id="yes" name="keepmate" value="yes" checked>
+    <label for="yes">Yes</label><br>
+    <input type="radio" id="no" name="keepmate" value="np">
+    <label for="no">No</label><br>
+    <input type='submit' value='Weaning'></input>
+    </form>
+
+    <hr>
+    <form action="{% url 'resetbirth' object.mateid %}" method='POST'>
+    {% csrf_token %}
+    If the infants died, please click => <input type='submit' value='reset birth situation'></input>
+    <p>Note: This function not tested yet (3/9/2020)
+    </form>
+
+    <hr>
     <a href="../">return</a>
 
 {% endblock %}

@@ -26,7 +26,7 @@
         {% for obj in mates %}
         <tr>
             <td><a href = "{% url 'mateinfo' obj.mateid %}">{{ obj.mateid }}</a></td>
-            <td>{{ obj.cageid }}</td>
+            <td><a href = "{% url 'cageinfo' obj.cageid %}">{{ obj.cageid }}</a></td>
             <td>{{ obj.father_id }}</td>
             <td>{{ obj.mother_id }}</td>
             <td>{{ obj.pair_date }}</td>

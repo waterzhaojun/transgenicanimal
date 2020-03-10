@@ -12,6 +12,9 @@ from datetime import datetime, timedelta
 
 from django.contrib.auth.decorators import login_required # to limit some function only for login user
 
+from . import utils
+import numpy as np
+from datetime import datetime
 # Create your views here.
 
 # from django.template import loader # use shortcuts instead of loader
@@ -62,7 +65,7 @@ class AnimalInfo(View):
     # def get_context_data(self, **k)
 
 
-class AnimalCreate(generic.CreateView):
+"""class AnimalCreate(generic.CreateView):
     form_class = AnimalInfoForm
     model = TransgenicAnimalLog
     template_name = 'transgenicanimal/create.html'
@@ -75,27 +78,24 @@ class MateCreate(generic.CreateView):
     template_name = 'transgenicanimal/create.html'
     # fields = ['mateid', 'cageid', 'father', 'mother', 'pair_date', 'note']  # this is refered to class in forms.py. the format of the value is defined there.
     # queryset = TransgenicMouseBreeding.objects.filter(inprocess = True)
-
+"""
 class MateInfo(generic.DetailView): # have to use updateview instead of detailview as detailview doesn't output a form
     model = TransgenicMouseBreeding
     template_name = 'transgenicanimal/mateinfo.html'
    
+class CageInfo(generic.DetailView):
+    model = TransgenicAnimalLog
+    template_name = 'transgenicanimal/cageinfo.html'
+    #queryset = TransgenicAnimalLog.objects.filter(~Q(cageid = 'terminated'))
+    def get(self, request, **kwargs):
+        cageid = kwargs['cageid']
+        animals = sorted(TransgenicAnimalLog.objects.filter(cageid = cageid), key = lambda t: t.animalid)
+        context = {
+            'animals': animals,
+            'cageid': cageid
+        }
+        return render(request, self.template_name, context)
 
-
-
-# following part is just for backup a function view writing method.
-"""
-def animalinfo(request, animalid):
-    animal = TransgenicAnimalLog.objects.get(pk = animalid)
-    context = {'animal': animal}
-    return render(request, 'transgmice/animal_info.html', context)
-    #return HttpResponse("<h2>info for animal " + animal.cageid + "</h2>")
-
-def breeding(request):
-    breedlist = TransgenicMouseBreeding.objects.all()
-    context = {'breedlist': breedlist}
-    return render(request, 'tr')
-""" 
 
 @login_required
 def terminate(request, animalid):
@@ -108,3 +108,89 @@ def givebirth(request, mateid):
     TransgenicMouseBreeding.objects.filter(mateid = mateid).update(birthday=day)
     return HttpResponseRedirect(reverse('transgenicanimal'))
     
+@login_required
+def wean(request, mateid):
+    malenum = int(request.POST.get('malenum'))
+    femalenum = int(request.POST.get('femalenum'))
+    malecage = request.POST.get('malecage')
+    femalecage = request.POST.get('femalecage')
+    keepmate = request.POST.get('keepmate') == 'yes'
+
+    mate = TransgenicMouseBreeding.objects.filter(mateid = mateid).first()
+    allnum = malenum + femalenum
+    genderlist = np.concatenate([np.repeat('M', malenum), np.repeat('F', femalenum)])
+    cagelist = np.concatenate([np.repeat(malecage, malenum), np.repeat(femalecage, femalenum)])
+    mateid = getattr(mate, 'mateid')
+    father = getattr(mate, 'father')
+    mother = getattr(mate, 'mother')
+    birthday = getattr(mate, 'birthday')
+
+    for i in range(allnum):
+        aid = utils.namekid(
+            [getattr(father, 'animalid'), getattr(mother, 'animalid')], 
+            birthday, mateid, i
+        )
+        print(aid)
+        print(genderlist[i])
+        print(cagelist[i])
+        TransgenicAnimalLog.objects.create(
+            animalid=aid,
+            cageid=cagelist[i],
+            dob=birthday,
+            gender=genderlist[i],
+            birth_mate=mate
+        )
+
+    mate.weaning_date = datetime.today()
+    mate.inprocess = False
+    mate.save()
+
+    if keepmate:
+        allmateid = [int(x[1:]) for x in list(TransgenicMouseBreeding.objects.values_list('mateid', flat = True))]
+        # use values_list instead of values can remove keys
+        allmateid.sort()
+        newmateid = 'M' + '%04d'% (allmateid[-1]+1)
+        print(newmateid)
+        TransgenicMouseBreeding.objects.create(
+            mateid=newmateid,
+            cageid=getattr(mate, 'cageid'),
+            father=father,
+            mother=mother,
+            pair_date=getattr(mate,'pair_date'),
+            inprocess=True
+        )
+    
+    return HttpResponseRedirect(reverse('transgenicanimal'))
+
+@login_required
+def resetbirth(request, mateid):
+    TransgenicMouseBreeding.objects.filter(mateid = mateid).update(birthday=None)
+    return HttpResponseRedirect(reverse('transgenicanimal')) # reverse by this url name.
+
+@login_required
+def move(request, animalid):
+    TransgenicAnimalLog.objects.filter(animalid = animalid).update(cageid=request.POST.get('cageid'))
+    return HttpResponseRedirect(reverse('transgenicanimal')) 
+
+@login_required
+def createmate(request, cageid):
+    animals = TransgenicAnimalLog.objects.filter(cageid = cageid)
+    animals_m = [x for x in animals if getattr(x, 'gender') == 'M']
+    animals_f = [x for x in animals if getattr(x, 'gender') == 'F']
+    if len(animals_m) == 1 and len(animals_f) > 0:
+        allmateid = [int(x[1:]) for x in list(TransgenicMouseBreeding.objects.values_list('mateid', flat = True))]
+        # use values_list instead of values can remove keys
+        allmateid.sort()
+        father = animals_m[0]
+        for i in range(len(animals_f)):
+            mother = animals_f[i]
+            TransgenicMouseBreeding.objects.create(
+                mateid='M' + '%04d'% (allmateid[-1]+1+i),
+                cageid=cageid,
+                father=father,
+                mother=mother,
+                pair_date=datetime.today(),
+                inprocess=True
+            )
+    
+    return HttpResponseRedirect(reverse('transgenicanimal')) 

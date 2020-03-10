@@ -12,10 +12,15 @@ urlpatterns = [
     path('animalinfo/<str:animalid>', views.AnimalInfo.as_view(), name='animalinfo'),
     path('animalinfo/', views.AnimalInfo.as_view()), # This is another way to search that id is in request
     path('animalinfo/terminate/<str:animalid>', views.terminate, name='terminate'),
-    path('animalinfo_create/', views.AnimalCreate.as_view(), name='animal_create'),
-    path('createmate/', views.MateCreate.as_view(), name='mate_create'),
+    #path('animalinfo_create/', views.AnimalCreate.as_view(), name='animal_create'),
+    #path('createmate/', views.MateCreate.as_view(), name='mate_create'),
     path('mateinfo/<str:pk>', views.MateInfo.as_view(), name='mateinfo'),
-    path('givebirth/<str:mateid>', views.givebirth, name='givebirth'),
+    path('givebirth/<str:mateid>', views.givebirth, name='givebirth'), 
+    path('wean/<str:mateid>', views.wean, name='wean'),
+    path('resetbirth/<str:mateid>', views.resetbirth, name='resetbirth'),
+    path('move/<str:animalid>', views.move, name='move'),
+    path('cageid/<str:cageid>', views.CageInfo.as_view(), name='cageinfo'),
+    path('createmate/<str:cageid>', views.createmate, name='createmate'),
     # path('animalinfo/<str:pk>', views.animalinfo(), name = 'animalinfo'),
 
 ]

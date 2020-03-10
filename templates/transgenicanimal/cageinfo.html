@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block customecss %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static "transgenicanimal/style.css" %}">
+{% endblock %}
+
+{% block content %}
+
+    {% for animal in animals %}
+    <div style="margin: 15px;">
+        id: {{ animal.animalid }}<br>
+        gender: {{ animal.gender}}<br>
+        birthday: {{ animal.dob }}<br>
+        cage: {{ animal.cageid }}<br>
+        mate id: {{ animal.birth_mate_id }}<br>
+        animal gene info: 
+        {{ animal.genotype }}<br>
+    </div>
+    {% endfor %}
+
+    <hr>
+    <form action="{% url 'createmate' cageid %}" method='POST'>
+    {% csrf_token %}
+    <input type='submit' value='Create New Mate'></input>
+    </form>
+
+{% endblock %}
