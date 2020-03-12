@@ -57,7 +57,7 @@
         {% for animal in thestrain.list %}
         <tr>
             <td><a href = "{% url 'animalinfo' animal.animalid %}">{{ animal.animalid }}</a></td>
-            <td>{{ animal.cageid }}</td>
+            <td><a href = "{% url 'cageinfo' animal.cageid %}">{{ animal.cageid }}</a></td>
             <td>{{ animal.gender }}</td>
             <td>{{ animal.ear_punch }}</td>
             <td>{{ animal.age }} ({{ animal.dob}})</td>
