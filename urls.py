@@ -21,6 +21,8 @@ urlpatterns = [
     path('move/<str:animalid>', views.move, name='move'),
     path('cageid/<str:cageid>', views.CageInfo.as_view(), name='cageinfo'),
     path('createmate/<str:cageid>', views.createmate, name='createmate'),
+    path('stopmate/<str:mateid>', views.stopmate, name='stopmate'),
+    path('schedule/<str:animalid>', views.schedule, name='schedule'),
     # path('animalinfo/<str:pk>', views.animalinfo(), name = 'animalinfo'),
 
 ]

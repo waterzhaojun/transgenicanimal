@@ -6,6 +6,9 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from django.contrib.postgres.fields import JSONField
+#from jsonfield import JSONField
+# I don't know why django has no JSONField. have to use this module
 from . import utils
 
 from datetime import datetime
@@ -24,6 +27,7 @@ class TransgenicAnimalLog(models.Model):
     test_company = models.CharField(max_length=20, blank=True, null=True)
     plate_num = models.CharField(max_length=20, blank=True, null=True)
     generation = models.IntegerField(max_length=2, blank=True, null=True)
+    schedule = JSONField(blank=True, null=True)
     #full_name = models.CharField(max_length=100)
 
     class Meta:
@@ -39,6 +43,10 @@ class TransgenicAnimalLog(models.Model):
         today = datetime.now().date()
         value = math.floor(((today - self.dob).days)/7)
         return(str(value)+ ' weeks')
+    @property
+    def schedulepurpose(self):
+        sch = self.schedule['purpose']
+        return(sch)
 
     # def get_absolute_url(self):
     #     return urls.reverse('index')
@@ -58,6 +66,11 @@ class TransgenicMouseBreeding(models.Model):
     class Meta:
         managed = False
         db_table = 'transgenic_mouse_breeding'
+
+    @property
+    def schedulesac(self):
+        sac = (self.father.schedulepurpose == 'terminate') * (self.mother.schedulepurpose == 'terminate')
+        return(sac)
 
     def get_absolute_url(self):
         return urls.reverse('index')#, kwargs={'pk': self.pk}) # when update or create finished , where to go. 'index' means go to transgenicanimal index.

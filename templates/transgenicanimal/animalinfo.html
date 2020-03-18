@@ -11,6 +11,7 @@
     father id: <a href = "{% url 'animalinfo' fatherid %}">{{ fatherid }}</a><br>
     mother id: <a href = "{% url 'animalinfo' motherid %}">{{ motherid }}</a><br>
     <br>
+
     <hr>
     <form action= "{% url 'terminate' animal.animalid %}" method='POST'>
     {% csrf_token %}
@@ -23,6 +24,21 @@
     Move this animal to a different cage: 
     <input name='cageid'></input>
     <input type='submit' value='Move'></input>
+    </form>
+
+    <hr>
+    <form action= "{% url 'schedule' animal.animalid %}" method='POST'>
+    {% csrf_token %}
+    Schedule the usage for this animal: choose the type, then click the button.<br><br>
+    <p>
+    <select name="purpose">
+        <option value="terminate" selected>terminate</option>
+        <option value="experiment">experiment</option>
+        <option value="cancel_terminate">cancel terminate</option>
+    </select>
+    <input type='submit' value='Schedule animal operation'></input>
+    </p>
+    </form>
 
     <hr>
     <a href="../">return</a>

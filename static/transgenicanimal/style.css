@@ -1,3 +1,15 @@
 td {
     padding: 2px 10px;
 }
+
+table {
+    font-size: 14px;
+}
+
+.schedule-terminate {
+    color: #DDDDDD;
+}
+
+.schedule-terminate a{
+    color: #DDDDDD;
+}

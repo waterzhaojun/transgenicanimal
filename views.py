@@ -27,8 +27,23 @@ class index(generic.ListView):
     def get_context_data(self, **kwargs):
         # queryset is the default output, besides that, you can use get_context_data to add more in the dict.
         context = super(index, self).get_context_data(**kwargs)
-        context['animals'] = sorted(TransgenicAnimalLog.objects.filter(~Q(cageid = 'terminated')), key = lambda t: t.strain)
-        context['mates'] = TransgenicMouseBreeding.objects.filter(inprocess = True)
+
+        animals = TransgenicAnimalLog.objects.filter(~Q(cageid = 'terminated'))
+        mates = TransgenicMouseBreeding.objects.filter(inprocess = True)
+
+        context['animals'] = sorted(animals.order_by('cageid'), key = lambda t: t.strain)
+        context['mates'] = mates.order_by('cageid')
+        context['info'] = {
+            'num_of_animals': animals.count(),
+            'num_of_unsac_animals': animals.filter(~Q(schedule__purpose = 'terminate')).count(),
+            'num_of_total_cages': animals.distinct('cageid').count(),
+            'num_of_mating_cages': mates.distinct('cageid').count(),
+            'num_of_mating_cages_after_sac': mates.filter(~Q(mother__schedule__purpose = 'terminate') or ~Q(father__schedule__purpose = 'terminate')).count(),
+            'num_of_unsac_cages': animals.filter(~Q(schedule__purpose = 'terminate')).distinct('cageid').count()
+            
+        }
+        print(mates.filter(~Q(mother__schedule__purpose = 'terminate') or ~Q(father__schedule__purpose = 'terminate')))
+        
         return context
     # context is like a big box send to template, in this box we have object_list which is a default variable if you just define model =...
     # Now we add 'animals' and 'mates' in the box. So in template, we can use animals and mates.
@@ -124,6 +139,7 @@ def wean(request, mateid):
     father = getattr(mate, 'father')
     mother = getattr(mate, 'mother')
     birthday = getattr(mate, 'birthday')
+    generation = request.POST.get('generation')
 
     for i in range(allnum):
         aid = utils.namekid(
@@ -138,7 +154,8 @@ def wean(request, mateid):
             cageid=cagelist[i],
             dob=birthday,
             gender=genderlist[i],
-            birth_mate=mate
+            birth_mate=mate,
+            generation=generation,
         )
 
     mate.weaning_date = datetime.today()
@@ -168,8 +185,25 @@ def resetbirth(request, mateid):
     return HttpResponseRedirect(reverse('transgenicanimal')) # reverse by this url name.
 
 @login_required
+def stopmate(request, mateid):
+    TransgenicMouseBreeding.objects.filter(mateid = mateid).update(inprocess=False)
+    return HttpResponseRedirect(reverse('transgenicanimal')) # reverse by this url name.
+
+@login_required
 def move(request, animalid):
     TransgenicAnimalLog.objects.filter(animalid = animalid).update(cageid=request.POST.get('cageid'))
+    return HttpResponseRedirect(reverse('transgenicanimal')) 
+
+@login_required
+def schedule(request, animalid):
+    purpose = request.POST.get('purpose')
+    username = request.user.username
+    animal = TransgenicAnimalLog.objects.filter(animalid = animalid).first()
+    if purpose == 'cancel_terminate':
+        animal.schedule = None
+    else:
+        animal.schedule = {'purpose': purpose, 'person': username}
+    animal.save()
     return HttpResponseRedirect(reverse('transgenicanimal')) 
 
 @login_required
