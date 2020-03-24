@@ -8,92 +8,97 @@
 {% endblock %}
 
 {% block content %}
-        
-    <h3>Check your animal</h3><br>
-    <form action="animalinfo/" method="get">
-        Animal id: <input type="text" name="animalid">
-        <input type="submit" value="Search">
-    </form>
-    <hr>
-
-    <div>
-    <p>total animal num: {{ info.num_of_animals}}</p>
-    <p>unsac animal num: {{ info.num_of_unsac_animals}}</p>
-    <p>
-    <p>total cage num: {{ info.num_of_total_cages}}</p>
-    <p>mating cage num: {{ info.num_of_mating_cages}}</p>
-    <p>cage num after scheduled sac: {{ info.num_of_unsac_cages }}</p>
-    <p>mating cage num after scheduled sac: {{ info.num_of_mating_cages_after_sac }}</p>
+    <div class="info-container">
+        <div class="info-container-left">
+            <h3>Check your animal</h3><br>
+            <form action="animalinfo/" method="get">
+                Animal id: <input type="text" name="animalid">
+                <input type="submit" value="Search">
+            </form>
+        </div>
+        <div class="info-container-right">
+            <p>total animal num: {{ info.num_of_animals}}</p>
+            <p>unsac animal num: {{ info.num_of_unsac_animals}}</p>
+            <p>total cage num: {{ info.num_of_total_cages}}</p>
+            <p>mating cage num: {{ info.num_of_mating_cages}}</p>
+            <p>cage num after scheduled sac: {{ info.num_of_unsac_cages }}</p>
+            <p>mating cage num after scheduled sac: {{ info.num_of_mating_cages_after_sac }}</p>
+        </div>
     </div>
-    <hr>
-
-    <h3>The mating pairs</h3><br>
     
-    
-    <table class="content">
-        <tr>
-            <th>mate id</th>
-            <th>cage id</th>
-            <th>father</th>
-            <th>mother</th>
-            <th>pair date</th>
-            <th>birthday</th>
-        </tr>
-        {% for obj in mates %}
-        <tr {% if obj.schedulesac == 1 %}
-                class="schedule-terminate"
-            {% endif %}>
-            <td><a href = "{% url 'mateinfo' obj.mateid %}">{{ obj.mateid }}</a></td>
-            <td><a href = "{% url 'cageinfo' obj.cageid %}">{{ obj.cageid }}</a></td>
-            <td>{{ obj.father_id }}</td>
-            <td>{{ obj.mother_id }}</td>
-            <td>{{ obj.pair_date }}</td>
-            <td>{{ obj.birthday }}</td>
-        </tr>
-        {% endfor %}
-    </table>
 
-    <h3>Animal list</h3>
-    {% regroup animals by strain as strain_list %}
-    {% for thestrain in strain_list %}
-    <table>
-        <tr>
-            <td>
-                <li>{{ thestrain.grouper }}</li>
-            </td>
-        </tr>
-        <tr>
-            <th>animal id</th>
-            <th>cage id</th>
-            <th>gender</th>
-            <th>ear punch</th>
-            <th>age</th>
-            <th>generation</th>
-            <th>genotype</th>
-            <th>plate num</th>
-        </tr>
-        
-        
-        {% regroup thestrain.list by cageid as cage_list %}
-        {% for cage in cage_list %}
-            <td>{{ cage.grouper }}</td>
-            {% for animal in cage.list %}
-            <tr {% if animal.schedulepurpose == 'terminate' %}
-                class="schedule-terminate"
-            {% endif %}>
-                <td><a href = "{% url 'animalinfo' animal.animalid %}">{{ animal.animalid }}</a></td>
-                <td><a href = "{% url 'cageinfo' animal.cageid %}">{{ animal.cageid }}</a></td>
-                <td>{{ animal.gender }}</td>
-                <td>{{ animal.ear_punch }}</td>
-                <td>{{ animal.age }} ({{ animal.dob}})</td>
-                <td>{{ animal.generation }}</td>
-                <td>{{ animal.genotype }}</td>
-                <td>{{ animal.plate_num }}</td>
+    <div class="section-title">
+        The mating pairs
+    </div>
+    
+    <div class="section-content">
+        <table>
+            <tr>
+                <th>mate id</th>
+                <th>cage id</th>
+                <th>father</th>
+                <th>mother</th>
+                <th>pair date</th>
+                <th>birthday</th>
+            </tr>
+            {% for obj in mates %}
+            <tr {% if obj.schedulesac == 1 %}
+                    class="schedule-terminate"
+                {% endif %}>
+                <td><a href = "{% url 'mateinfo' obj.mateid %}">{{ obj.mateid }}</a></td>
+                <td><a href = "{% url 'cageinfo' obj.cageid %}">{{ obj.cageid }}</a></td>
+                <td>{{ obj.father_id }}</td>
+                <td>{{ obj.mother_id }}</td>
+                <td>{{ obj.pair_date }}</td>
+                <td>{{ obj.birthday }}</td>
             </tr>
             {% endfor %}
-        {% endfor %}    
-    </table>
-    <br>
+        </table>
+    </div>
+
+    <div class="section-title">Animal list</div>
+    {% regroup animals by strain as strain_list %}
+    {% for thestrain in strain_list %}
+    <div class="section-content">
+        <table class="content">
+            <tr>
+                <td>
+                    <li>{{ thestrain.grouper }}</li>
+                </td>
+            </tr>
+            <tr>
+                <th>animal id</th>
+                <th>cage id</th>
+                <th>gender</th>
+                <th>ear punch</th>
+                <th>age</th>
+                <th>generation</th>
+                <th>genotype</th>
+                <th>plate num</th>
+            </tr>
+            
+            
+            {% regroup thestrain.list by cageid as cage_list %}
+            {% for cage in cage_list %}
+                <td>{{ cage.grouper }}</td>
+                {% for animal in cage.list %}
+                <tr {% if animal.schedulepurpose == 'terminate' %}
+                    class="schedule-terminate"
+                {% endif %}>
+                    <td><a href = "{% url 'animalinfo' animal.animalid %}">{{ animal.animalid }}</a></td>
+                    <td><a href = "{% url 'cageinfo' animal.cageid %}">{{ animal.cageid }}</a></td>
+                    <td>{{ animal.gender }}</td>
+                    <td>{{ animal.ear_punch }}</td>
+                    <td>{{ animal.age }} ({{ animal.dob}})</td>
+                    <td>{{ animal.generation }}</td>
+                    <td>{{ animal.genotype }}</td>
+                    <td>{{ animal.plate_num }}</td>
+                </tr>
+                {% endfor %}
+            {% endfor %}    
+        </table>
+        <br>
+    </div>
     {% endfor %}
 
 {% endblock %}
