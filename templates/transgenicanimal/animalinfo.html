@@ -8,18 +8,18 @@
     mate id: {{ animal.birth_mate_id }}<br>
     animal gene info: 
     {{ animal.genotype }}<br>
-    father id: <a href = "{% url 'animalinfo' fatherid %}">{{ fatherid }}</a><br>
-    mother id: <a href = "{% url 'animalinfo' motherid %}">{{ motherid }}</a><br>
+    father id: <a href = "{% url 'transgenicanimal:animalinfo' fatherid %}">{{ fatherid }}</a><br>
+    mother id: <a href = "{% url 'transgenicanimal:animalinfo' motherid %}">{{ motherid }}</a><br>
     <br>
 
     <hr>
-    <form action= "{% url 'terminate' animal.animalid %}" method='POST'>
+    <form action= "{% url 'transgenicanimal:terminate' animal.animalid %}" method='POST'>
     {% csrf_token %}
     <input type='submit' value='Move it out of calony'>
     </form>
 
     <hr>
-    <form action= "{% url 'move' animal.animalid %}" method='POST'>
+    <form action= "{% url 'transgenicanimal:move' animal.animalid %}" method='POST'>
     {% csrf_token %}
     Move this animal to a different cage: 
     <input name='cageid'></input>
@@ -27,7 +27,7 @@
     </form>
 
     <hr>
-    <form action= "{% url 'schedule' animal.animalid %}" method='POST'>
+    <form action= "{% url 'transgenicanimal:schedule' animal.animalid %}" method='POST'>
     {% csrf_token %}
     Schedule the usage for this animal: choose the type, then click the button.<br><br>
     <p>

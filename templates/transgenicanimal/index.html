@@ -45,8 +45,8 @@
             <tr {% if obj.schedulesac == 1 %}
                     class="schedule-terminate"
                 {% endif %}>
-                <td><a href = "{% url 'mateinfo' obj.mateid %}">{{ obj.mateid }}</a></td>
-                <td><a href = "{% url 'cageinfo' obj.cageid %}">{{ obj.cageid }}</a></td>
+                <td><a href = "{% url 'transgenicanimal:mateinfo' obj.mateid %}">{{ obj.mateid }}</a></td>
+                <td><a href = "{% url 'transgenicanimal:cageinfo' obj.cageid %}">{{ obj.cageid }}</a></td>
                 <td>{{ obj.father_id }}</td>
                 <td>{{ obj.mother_id }}</td>
                 <td>{{ obj.pair_date }}</td>
@@ -85,8 +85,8 @@
                 <tr {% if animal.schedulepurpose == 'terminate' %}
                     class="schedule-terminate"
                 {% endif %}>
-                    <td><a href = "{% url 'animalinfo' animal.animalid %}">{{ animal.animalid }}</a></td>
-                    <td><a href = "{% url 'cageinfo' animal.cageid %}">{{ animal.cageid }}</a></td>
+                    <td><a href = "{% url 'transgenicanimal:animalinfo' animal.animalid %}">{{ animal.animalid }}</a></td>
+                    <td><a href = "{% url 'transgenicanimal:cageinfo' animal.cageid %}">{{ animal.cageid }}</a></td>
                     <td>{{ animal.gender }}</td>
                     <td>{{ animal.ear_punch }}</td>
                     <td>{{ animal.age }} ({{ animal.dob}})</td>

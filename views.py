@@ -115,7 +115,8 @@ class CageInfo(generic.DetailView):
 @login_required
 def terminate(request, animalid):
     TransgenicAnimalLog.objects.filter(animalid = animalid).update(cageid='terminated')
-    return HttpResponseRedirect(reverse('transgenicanimal')) # reverse by this url name.
+    print('hello')
+    return HttpResponseRedirect(reverse('transgenicanimal:transgenicanimal')) # reverse by this url name.
 
 @login_required      
 def givebirth(request, mateid):
