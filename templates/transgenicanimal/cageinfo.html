@@ -20,7 +20,7 @@
     {% endfor %}
 
     <hr>
-    <form action="{% url 'createmate' cageid %}" method='POST'>
+    <form action="{% url 'transgenicanimal:createmate' cageid %}" method='POST'>
     {% csrf_token %}
     <input type='submit' value='Create New Mate'></input>
     </form>

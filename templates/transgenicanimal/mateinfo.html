@@ -14,7 +14,7 @@
 
     {% if object.birthday == null %}
         <hr>
-        <form action="{% url 'givebirth' object.mateid %}" method='POST'>
+        <form action="{% url 'transgenicanimal:givebirth' object.mateid %}" method='POST'>
         {% csrf_token %}
         Delievered <input type='number' value=0 name='days'></input> days ago
         <input type='submit' value='Confirm give birth'></input>
@@ -22,7 +22,7 @@
 
     {% else %}
         <hr>
-        <form action="{% url 'wean' object.mateid %}" method='POST'>
+        <form action="{% url 'transgenicanimal:wean' object.mateid %}" method='POST'>
         {% csrf_token %}
         <p>male num: <input type='number' value=0 name='malenum'></input>
         male cage: <input name='malecage'></input>
@@ -39,7 +39,7 @@
 
         
         <hr>
-        <form action="{% url 'resetbirth' object.mateid %}" method='POST'>
+        <form action="{% url 'transgenicanimal:resetbirth' object.mateid %}" method='POST'>
         {% csrf_token %}
         If the infants died, please click => <input type='submit' value='reset birth situation'></input>
         <p>Note: This function not tested yet (3/9/2020)
@@ -47,7 +47,7 @@
     {% endif %}
 
     <hr>
-    <form action="{% url 'stopmate' object.mateid %}" method='POST'>
+    <form action="{% url 'transgenicanimal:stopmate' object.mateid %}" method='POST'>
     {% csrf_token %}
     <input type='submit' value='Stop mating'></input>
     </form>

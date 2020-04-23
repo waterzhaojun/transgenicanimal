@@ -116,13 +116,13 @@ class CageInfo(generic.DetailView):
 def terminate(request, animalid):
     TransgenicAnimalLog.objects.filter(animalid = animalid).update(cageid='terminated')
     print('hello')
-    return HttpResponseRedirect(reverse('transgenicanimal:transgenicanimal')) # reverse by this url name.
+    return HttpResponseRedirect(reverse('transgenicanimal:index')) # reverse by this url name.
 
 @login_required      
 def givebirth(request, mateid):
     day = datetime.today() - timedelta(days=int(request.POST.get('days')))
     TransgenicMouseBreeding.objects.filter(mateid = mateid).update(birthday=day)
-    return HttpResponseRedirect(reverse('transgenicanimal'))
+    return HttpResponseRedirect(reverse('transgenicanimal:index'))
     
 @login_required
 def wean(request, mateid):
@@ -178,22 +178,22 @@ def wean(request, mateid):
             inprocess=True
         )
     
-    return HttpResponseRedirect(reverse('transgenicanimal'))
+    return HttpResponseRedirect(reverse('transgenicanimal:index'))
 
 @login_required
 def resetbirth(request, mateid):
     TransgenicMouseBreeding.objects.filter(mateid = mateid).update(birthday=None)
-    return HttpResponseRedirect(reverse('transgenicanimal')) # reverse by this url name.
+    return HttpResponseRedirect(reverse('transgenicanimal:index')) # reverse by this url name.
 
 @login_required
 def stopmate(request, mateid):
     TransgenicMouseBreeding.objects.filter(mateid = mateid).update(inprocess=False)
-    return HttpResponseRedirect(reverse('transgenicanimal')) # reverse by this url name.
+    return HttpResponseRedirect(reverse('transgenicanimal:index')) # reverse by this url name.
 
 @login_required
 def move(request, animalid):
     TransgenicAnimalLog.objects.filter(animalid = animalid).update(cageid=request.POST.get('cageid'))
-    return HttpResponseRedirect(reverse('transgenicanimal')) 
+    return HttpResponseRedirect(reverse('transgenicanimal:index')) 
 
 @login_required
 def schedule(request, animalid):
@@ -205,7 +205,7 @@ def schedule(request, animalid):
     else:
         animal.schedule = {'purpose': purpose, 'person': username}
     animal.save()
-    return HttpResponseRedirect(reverse('transgenicanimal')) 
+    return HttpResponseRedirect(reverse('transgenicanimal:index')) 
 
 @login_required
 def createmate(request, cageid):
@@ -228,4 +228,4 @@ def createmate(request, cageid):
                 inprocess=True
             )
     
-    return HttpResponseRedirect(reverse('transgenicanimal')) 
+    return HttpResponseRedirect(reverse('transgenicanimal:index')) 
