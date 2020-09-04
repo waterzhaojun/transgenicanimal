@@ -28,6 +28,7 @@ class TransgenicAnimalLog(models.Model):
     plate_num = models.CharField(max_length=20, blank=True, null=True)
     generation = models.IntegerField(max_length=2, blank=True, null=True)
     schedule = JSONField(blank=True, null=True)
+    species = models.CharField(max_length=10, blank=False, null=False)
     #full_name = models.CharField(max_length=100)
 
     class Meta:

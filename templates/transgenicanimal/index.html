@@ -8,21 +8,27 @@
 {% endblock %}
 
 {% block content %}
-    <div class="info-container">
-        <div class="info-container-left">
-            <h3>Check your animal</h3><br>
-            <form action="animalinfo/" method="get">
-                Animal id: <input type="text" name="animalid">
-                <input type="submit" value="Search">
-            </form>
-        </div>
-        <div class="info-container-right">
-            <p>total animal num: {{ info.num_of_animals}}</p>
-            <p>unsac animal num: {{ info.num_of_unsac_animals}}</p>
-            <p>total cage num: {{ info.num_of_total_cages}}</p>
-            <p>mating cage num: {{ info.num_of_mating_cages}}</p>
-            <p>cage num after scheduled sac: {{ info.num_of_unsac_cages }}</p>
-            <p>mating cage num after scheduled sac: {{ info.num_of_mating_cages_after_sac }}</p>
+    <div class="container">
+        <div class="row">
+            <div class="card bg-light col-sm-6">
+                <div class="card-header">Check your animal</div>
+                <div class="card-body">
+                    <form action="animalinfo/" method="get">
+                        Animal id: <input type="text" name="animalid">
+                        <input type="submit" value="Search">
+                    </form>
+                </div>
+            </div>
+            <div class="card bg-light col-sm-6">
+                <div class="card-body">
+                    <p class"card-text">total animal num: {{ info.num_of_animals}}</p>
+                    <p class"card-text">unsac animal num: {{ info.num_of_unsac_animals}}</p>
+                    <p class"card-text">total cage num: {{ info.num_of_total_cages}}</p>
+                    <p class"card-text">mating cage num: {{ info.num_of_mating_cages}}</p>
+                    <p class"card-text">cage num after scheduled sac: {{ info.num_of_unsac_cages }}</p>
+                    <p class"card-text">mating cage num after scheduled sac: {{ info.num_of_mating_cages_after_sac }}</p>
+                </div>
+            </div>
         </div>
     </div>
     
@@ -69,6 +75,7 @@
             <tr>
                 <th>animal id</th>
                 <th>cage id</th>
+                <th>species</th>
                 <th>gender</th>
                 <th>ear punch</th>
                 <th>age</th>
@@ -87,6 +94,7 @@
                 {% endif %}>
                     <td><a href = "{% url 'transgenicanimal:animalinfo' animal.animalid %}">{{ animal.animalid }}</a></td>
                     <td><a href = "{% url 'transgenicanimal:cageinfo' animal.cageid %}">{{ animal.cageid }}</a></td>
+                    <td>{{ animal.species }}</td>
                     <td>{{ animal.gender }}</td>
                     <td>{{ animal.ear_punch }}</td>
                     <td>{{ animal.age }} ({{ animal.dob}})</td>
