@@ -11,6 +11,31 @@
     father id: <a href = "{% url 'transgenicanimal:animalinfo' fatherid %}">{{ fatherid }}</a><br>
     mother id: <a href = "{% url 'transgenicanimal:animalinfo' motherid %}">{{ motherid }}</a><br>
     <br>
+    <p style="background-color:lightgray;">Treatments: </p>
+    {% for value in animal.surgtreatment_set.all %}
+    ===================================================<br>
+    {{ value.method }}<br>
+    {{ value.date}}<br>
+    {% for key, value in value.parameters.items %}
+    {{ key }}: {{ value }}<br>
+    {% endfor %}
+    {{ value.note}}<br>
+    {% endfor %}
+    <br>
+    <p style="background-color:lightgray;">Add a new treatment (Note: not add this function yet)</p>
+    <form action="addtreatment" method="POST">
+    <select name="treatmenttype"> 
+        <option selected="true" disabled="disabled">Choose a treatment type</option> 
+        <option value="aavinject">aav inject</option> 
+        <option value="windowsetup">window setup</option> 
+        <option value="drug">drug treatment</option> 
+        <option value="purfusion">purfusion</option> 
+        <option value="tbi">traumatic head injury</option> 
+    </select> 
+    <input type="submit" value="Add"></input><br>
+
+
+    </form>
 
     <hr>
     <form action= "{% url 'transgenicanimal:terminate' animal.animalid %}" method='POST'>

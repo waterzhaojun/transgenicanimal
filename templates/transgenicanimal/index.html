@@ -62,7 +62,11 @@
         </table>
     </div>
 
-    <div class="section-title">Animal list</div>
+    <div class="section-title">Animal list
+    {% if user.is_authenticated %}
+        <a href="animal_edit"><span class="glyphicon glyphicon-plus">+</span></a>
+    {% endif %}
+    </div>
     {% regroup animals by strain as strain_list %}
     {% for thestrain in strain_list %}
     <div class="section-content">
@@ -81,7 +85,7 @@
                 <th>age</th>
                 <th>generation</th>
                 <th>genotype</th>
-                <th>plate num</th>
+                <th>treatment</th>
             </tr>
             
             
@@ -100,7 +104,11 @@
                     <td>{{ animal.age }} ({{ animal.dob}})</td>
                     <td>{{ animal.generation }}</td>
                     <td>{{ animal.genotype }}</td>
-                    <td>{{ animal.plate_num }}</td>
+                    <td>
+                        {% for t in animal.surgtreatment_set.all %}
+                            {{ t.method }} ({{ t.date }}) &nbsp
+                        {% endfor %}
+                    </td>
                 </tr>
                 {% endfor %}
             {% endfor %}    

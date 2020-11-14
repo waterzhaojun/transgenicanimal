@@ -6,7 +6,7 @@ from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.urls import reverse_lazy, reverse
 from django.db.models import Q
 
-from .models import TransgenicAnimalLog, TransgenicMouseBreeding
+from .models import TransgenicAnimalLog, TransgenicMouseBreeding, SurgTreatment
 from .forms import AnimalMateForm, AnimalInfoForm
 from datetime import datetime, timedelta
 
@@ -229,3 +229,17 @@ def createmate(request, cageid):
             )
     
     return HttpResponseRedirect(reverse('transgenicanimal:index')) 
+
+#@login_required
+def animal_edit(request):
+    template = 'transgenicanimal/animal_edit.html'
+    if request.method == "POST":
+        form = AnimalInfoForm(request.POST)
+        if form.is_valid():
+            a = form.save(commit=False) # create an animal object but not save to db yet.
+            ## post.author = request.user   do some extra assign.
+            a.save()
+            return HttpResponseRedirect(reverse('transgenicanimal:index')) 
+    else:
+        form = AnimalInfoForm(initial={'ear_punch': 'None'})
+    return render(request, template, {'form': form})
