@@ -85,6 +85,7 @@
                 <th>age</th>
                 <th>generation</th>
                 <th>genotype</th>
+                <th>owner</th>
                 <th>treatment</th>
             </tr>
             
@@ -104,6 +105,7 @@
                     <td>{{ animal.age }} ({{ animal.dob}})</td>
                     <td>{{ animal.generation }}</td>
                     <td>{{ animal.genotype }}</td>
+                    <td>{{ animal.owner.firstname }}</td>
                     <td>
                         {% for t in animal.surgtreatment_set.all %}
                             {{ t.method }} ({{ t.date }}) &nbsp

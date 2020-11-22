@@ -29,6 +29,7 @@ class TransgenicAnimalLog(models.Model):
     generation = models.IntegerField(max_length=2, blank=True, null=True)
     schedule = JSONField(blank=True, null=True)
     species = models.CharField(max_length=10, blank=False, null=False)
+    owner = models.ForeignKey('User', models.DO_NOTHING, blank=True, null=True, db_column='owner')
     #full_name = models.CharField(max_length=100)
 
     class Meta:
@@ -94,7 +95,7 @@ class SurgTreatment(models.Model):
     date = models.DateField()
     time = models.TimeField(blank=True, null=True)
     method = models.CharField(max_length=20)
-    operator = models.CharField(max_length=20, blank=True, null=True)
+    operator = models.ForeignKey('User', models.DO_NOTHING, db_column='operator')
     note = models.TextField(blank=True, null=True)
     parameters = JSONField()  # This field type is a guess.
     serialid = models.AutoField(primary_key=True) # There is a warning that can't have two AutoField. So I disable this one.
@@ -102,3 +103,12 @@ class SurgTreatment(models.Model):
     class Meta:
         managed = False
         db_table = 'surg_treatment'
+
+class User(models.Model):
+    id = models.IntegerField(primary_key=True)
+    firstname = models.CharField(max_length=100, db_column='first_name')
+    lastname = models.CharField(max_length=100, db_column='last_name')
+
+    class Meta:
+        managed = False
+        db_table = 'auth_user'

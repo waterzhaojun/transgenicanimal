@@ -21,9 +21,10 @@
     {% endfor %}
     {{ value.note}}<br>
     {% endfor %}
+
     <br>
     <p style="background-color:lightgray;">Add a new treatment (Note: not add this function yet)</p>
-    <form action="addtreatment" method="POST">
+    <form action={% url 'transgenicanimal:addtreatment' animal.animalid %} method="GET">
     <select name="treatmenttype"> 
         <option selected="true" disabled="disabled">Choose a treatment type</option> 
         <option value="aavinject">aav inject</option> 
@@ -31,6 +32,7 @@
         <option value="drug">drug treatment</option> 
         <option value="purfusion">purfusion</option> 
         <option value="tbi">traumatic head injury</option> 
+        <option value="lfp">LFP wire setup</option> 
     </select> 
     <input type="submit" value="Add"></input><br>
 

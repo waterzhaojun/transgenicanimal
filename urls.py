@@ -13,6 +13,7 @@ urlpatterns = [
     path('animalinfo/', views.AnimalInfo.as_view()), # This is another way to search that id is in request
     path('animalinfo/terminate/<str:animalid>', views.terminate, name='terminate'),
     path('animal_edit/', views.animal_edit, name='animal_edit'),
+    path('animalinfo/addtreatment/<str:animalid>', views.addtreatment, name='addtreatment'),
     #path('animalinfo_create/', views.AnimalCreate.as_view(), name='animal_create'),
     #path('createmate/', views.MateCreate.as_view(), name='mate_create'),
     path('mateinfo/<str:pk>', views.MateInfo.as_view(), name='mateinfo'),

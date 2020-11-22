@@ -6,8 +6,8 @@ from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.urls import reverse_lazy, reverse
 from django.db.models import Q
 
-from .models import TransgenicAnimalLog, TransgenicMouseBreeding, SurgTreatment
-from .forms import AnimalMateForm, AnimalInfoForm
+from .models import TransgenicAnimalLog, TransgenicMouseBreeding, SurgTreatment, User
+from .forms import *
 from datetime import datetime, timedelta
 
 from django.contrib.auth.decorators import login_required # to limit some function only for login user
@@ -230,7 +230,7 @@ def createmate(request, cageid):
     
     return HttpResponseRedirect(reverse('transgenicanimal:index')) 
 
-#@login_required
+@login_required
 def animal_edit(request):
     template = 'transgenicanimal/animal_edit.html'
     if request.method == "POST":
@@ -238,8 +238,55 @@ def animal_edit(request):
         if form.is_valid():
             a = form.save(commit=False) # create an animal object but not save to db yet.
             ## post.author = request.user   do some extra assign.
+            #print(a.gender)
+            a.owner = User.objects.get(id=request.user.id)
+            #print(a.owner)
             a.save()
             return HttpResponseRedirect(reverse('transgenicanimal:index')) 
     else:
         form = AnimalInfoForm(initial={'ear_punch': 'None'})
     return render(request, template, {'form': form})
+
+
+@login_required
+def addtreatment(request,animalid):
+    template = 'transgenicanimal/addtreatment.html'
+    print(animalid)
+    print(request.GET['treatmenttype'])
+    
+    if request.method == 'POST':
+        if request.GET['treatmenttype'] == 'aavinject':
+            form = AavinjectForm(request.POST)
+        elif request.GET['treatmenttype'] == 'windowsetup':
+            form = Setupwindow(request.POST)
+        elif request.GET['treatmenttype'] == 'lfp':
+            form = Lfp(request.POST)
+
+        if form.is_valid():
+            print(form.cleaned_data)
+            print('===============')
+            #a = form.save(commit=False)
+            a = SurgTreatment() #用这个方法是可以的，但我觉得用commit false的方法也行，我是看到返回的object(None)就没有用了，其实可以一试。
+            a.date = form.cleaned_data['date']
+            a.time = form.cleaned_data['time']
+            a.method = form.cleaned_data['method']
+            
+            a.note = form.cleaned_data['note']
+            a.parameters = form.cleaned_data['parameters']
+            a.animalid = TransgenicAnimalLog.objects.get(animalid = animalid)
+            a.operator = User.objects.get(id = request.user.id)
+            a.save()
+            return HttpResponseRedirect(reverse('transgenicanimal:index'))
+        else:
+            print('has problem')
+    else:
+        print('here')
+        if request.GET['treatmenttype'] == 'aavinject':
+            form = AavinjectForm(initial={'aav': '0', 'inject_method':'1', 'inject_tool':'0'})
+        elif request.GET['treatmenttype'] == 'windowsetup':
+            form = Setupwindow()
+        elif request.GET['treatmenttype'] == 'lfp':
+            form = Lfp()
+    
+    return render(request, template, {'form': form})
+
