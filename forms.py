@@ -192,3 +192,16 @@ class Lfp(forms.ModelForm):
             'wire_type': self.wiretypelist[int(cleaned_data.get('wire_type'))][1],
             'location': 'reference: '+cleaned_data.get('ref')+'mm, AP '+str(cleaned_data.get('ap'))+'mm, ML '+str(cleaned_data.get('ml'))
         }
+
+class Perfusion(forms.ModelForm):
+    class Meta:
+        model = SurgTreatment
+        fields = ('date', 'time','note')
+        widgets = {
+            'date': forms.SelectDateWidget,
+            'time': forms.DateInput(attrs={'class':'timepicker'})
+        }
+    def clean(self):
+        cleaned_data = super().clean()
+        self.cleaned_data['method'] = 'PFA purfusion'
+        self.cleaned_data['parameters'] = {}

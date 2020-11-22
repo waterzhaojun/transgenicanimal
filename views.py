@@ -261,6 +261,10 @@ def addtreatment(request,animalid):
             form = Setupwindow(request.POST)
         elif request.GET['treatmenttype'] == 'lfp':
             form = Lfp(request.POST)
+        elif request.GET['treatmenttype'] == 'perfusion':
+            form = Perfusion(request.POST)
+            # 这里不能用get得到的object，只能用filter得到的query结果
+            TransgenicAnimalLog.objects.filter(animalid = animalid).update(cageid = 'terminated')
 
         if form.is_valid():
             print(form.cleaned_data)
@@ -280,13 +284,14 @@ def addtreatment(request,animalid):
         else:
             print('has problem')
     else:
-        print('here')
         if request.GET['treatmenttype'] == 'aavinject':
             form = AavinjectForm(initial={'aav': '0', 'inject_method':'1', 'inject_tool':'0'})
         elif request.GET['treatmenttype'] == 'windowsetup':
             form = Setupwindow()
         elif request.GET['treatmenttype'] == 'lfp':
             form = Lfp()
+        elif request.GET['treatmenttype'] == 'perfusion':
+            form = Perfusion()
     
     return render(request, template, {'form': form})
 
