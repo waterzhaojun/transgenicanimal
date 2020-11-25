@@ -251,8 +251,6 @@ def animal_edit(request):
 @login_required
 def addtreatment(request,animalid):
     template = 'transgenicanimal/addtreatment.html'
-    print(animalid)
-    print(request.GET['treatmenttype'])
     
     if request.method == 'POST':
         if request.GET['treatmenttype'] == 'aavinject':
